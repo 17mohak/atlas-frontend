@@ -74,7 +74,7 @@ export default function AtlasLandingPage() {
       // Navigate to the dashboard layout
       router.push('/dashboard');
 
-    } catch (error) {
+    } catch {
       form.setError("root", { message: "Authentication failed. Please verify your credentials." });
     } finally {
       setIsLoading(false);

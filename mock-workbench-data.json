@@ -1,0 +1,70 @@
+{
+  "departments": [
+    { "id": "d-001", "name": "Design" },
+    { "id": "d-002", "name": "Communication" }
+  ],
+  "batches": [
+    { "id": "b-100", "name": "2026 UX Cohort", "departmentId": "d-001", "studentCount": 35 },
+    { "id": "b-101", "name": "2027 Industrial Design", "departmentId": "d-001", "studentCount": 40 }
+  ],
+  "subjects": [
+    { "id": "subj-01", "name": "Interaction Design", "code": "IXD-201", "lecsPerWeek": 4, "requiresLab": true },
+    { "id": "subj-02", "name": "Design History", "code": "DHS-101", "lecsPerWeek": 2, "requiresLab": false },
+    { "id": "subj-03", "name": "Rapid Prototyping", "code": "RPT-301", "lecsPerWeek": 3, "requiresLab": true },
+    { "id": "subj-04", "name": "Typography", "code": "TYP-101", "lecsPerWeek": 2, "requiresLab": false },
+    { "id": "subj-05", "name": "3D Modeling", "code": "3DM-201", "lecsPerWeek": 4, "requiresLab": true },
+    { "id": "subj-06", "name": "Design Ethics", "code": "ETH-301", "lecsPerWeek": 2, "requiresLab": false },
+    { "id": "subj-07", "name": "Portfolio Studio", "code": "PRT-401", "lecsPerWeek": 3, "requiresLab": true },
+    { "id": "subj-08", "name": "Web Technologies", "code": "WEB-201", "lecsPerWeek": 4, "requiresLab": true }
+  ],
+  "faculty": [
+    { "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "name": "Dr. Arjan Singh", "department": "Design", "totalHours": 18.5, "status": "In Session" },
+    { "id": "123e4567-e89b-12d3-a456-426614174000", "name": "Prof. Alan Turing", "department": "Tech", "totalHours": 20, "status": "Available" },
+    { "id": "3b241101-e2bb-4255-a319-72847c22998a", "name": "Dieter Rams", "department": "Design", "totalHours": 15, "status": "Available" },
+    { "id": "8a1b5c2d-9e3f-4g5h-6i7j-8k9l0m1n2o3p", "name": "Paula Scher", "department": "Design", "totalHours": 10, "status": "Available" },
+    { "id": "5c3d7e9f-1a2b-3c4d-5e6f-7g8h9i0j1k2l", "name": "Tim Berners-Lee", "department": "Tech", "totalHours": 12, "status": "On Leave" },
+    { "id": "9d8c7b6a-5e4f-3g2h-1i0j-k9l8m7n6o5p4", "name": "Don Norman", "department": "Design", "totalHours": 8, "status": "Available" }
+  ],
+  "rooms": [
+    { "id": "r11bc32d-79ee-6594-c789-2g24d4e5f691", "roomNumber": "L-402", "type": "Lecture Hall", "capacity": 60, "isLab": false, "status": "Occupied" },
+    { "id": "r22cd43e-8aff-7605-d890-3h35e5f6g702", "roomNumber": "C-101", "type": "Computer Lab", "capacity": 30, "isLab": true, "status": "Maintenance" }
+  ],
+  "sessions": [
+    {
+      "id": "s-1",
+      "courseName": "Interaction Design",
+      "facultyId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "roomId": "r11bc32d-79ee-6594-c789-2g24d4e5f691",
+      "dayOfWeek": "Monday",
+      "startTime": "2026-03-30T09:00:00Z",
+      "endTime": "2026-03-30T11:00:00Z"
+    },
+    {
+      "id": "s-2",
+      "courseName": "Design History",
+      "facultyId": "3b241101-e2bb-4255-a319-72847c22998a",
+      "roomId": "r11bc32d-79ee-6594-c789-2g24d4e5f691",
+      "dayOfWeek": "Tuesday",
+      "startTime": "2026-03-31T13:00:00Z",
+      "endTime": "2026-03-31T16:00:00Z"
+    },
+    {
+      "id": "s-3",
+      "courseName": "Typography",
+      "facultyId": "8a1b5c2d-9e3f-4g5h-6i7j-8k9l0m1n2o3p",
+      "roomId": "r22cd43e-8aff-7605-d890-3h35e5f6g702",
+      "dayOfWeek": "Wednesday",
+      "startTime": "2026-04-01T10:00:00Z",
+      "endTime": "2026-04-01T11:00:00Z"
+    },
+    {
+      "id": "s-4",
+      "courseName": "Typography Lab",
+      "facultyId": "8a1b5c2d-9e3f-4g5h-6i7j-8k9l0m1n2o3p",
+      "roomId": "r22cd43e-8aff-7605-d890-3h35e5f6g702",
+      "dayOfWeek": "Wednesday",
+      "startTime": "2026-04-01T10:30:00Z",
+      "endTime": "2026-04-01T12:00:00Z"
+    }
+  ]
+}
