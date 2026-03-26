@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ATLAS: Smart Class Scheduler
 
-## Getting Started
+An enterprise-grade, high-density scheduling console and timetable matrix designed for university administration.
 
-First, run the development server:
+## Key Features
 
-```bash
+- High-Density Operational Workbench: 3-pane architectural layout.
+- 2D Drag-and-Drop Matrix: Powered by @dnd-kit/core.
+- Variable Duration Physics: Supports 1h lectures and 3h labs.
+- Real-Time Conflict Engine: Detects Room and Faculty overlaps.
+- System Overview: Command center tracking Room Utilization.
+
+## Tech Stack
+
+- Framework: Next.js 15 (App Router)
+- Styling: Tailwind CSS + shadcn/ui
+- Drag and Drop: @dnd-kit/core
+- State Management: Native React Context
+
+## Installation
+
+1. Clone the repository:
+git clone [https://github.com/17mohak/atlas-frontend.git](https://github.com/17mohak/atlas-frontend.git)
+
+2. Enter the directory:
+cd atlas-frontend
+
+3. Install dependencies:
+npm install
+
+4. Run the development server:
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Accessing the App
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open http://localhost:3000/dashboard/schedule in your browser to access the Workbench.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Roadmap
 
-## Learn More
+- [x] Phase 1: Auth and Data Table Foundation.
+- [x] Phase 2: Workbench Pivot and Dashboard.
+- [x] Phase 3: DnD Engine and Conflict Detection.
+- [ ] Phase 4: Details Pane and Collision Polish.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+Developed for Project ATLAS
