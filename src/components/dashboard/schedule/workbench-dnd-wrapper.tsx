@@ -1,7 +1,7 @@
 "use client"
 
 import { ReactNode, useState, useEffect } from "react"
-import { DndContext, DragStartEvent, DragEndEvent, DragCancelEvent, useSensor, useSensors, PointerSensor, KeyboardSensor, DragOverlay } from "@dnd-kit/core"
+import { DndContext, DragStartEvent, DragEndEvent, useSensor, useSensors, PointerSensor, KeyboardSensor, DragOverlay } from "@dnd-kit/core"
 import { useSchedule } from "./schedule-context"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"

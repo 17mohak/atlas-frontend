@@ -13,15 +13,7 @@ const timeSlots = [
 
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
-// Helper to convert ISO time to our timeSlots format
-function getSlotIndex(isoString: string) {
-  const date = new Date(isoString)
-  const hours = date.getUTCHours()
-  const ampm = hours >= 12 ? 'PM' : 'AM'
-  const displayHours = hours % 12 || 12
-  const formattedTime = `${displayHours.toString().padStart(2, '0')}:00 ${ampm}`
-  return timeSlots.indexOf(formattedTime)
-}
+// Helper removed to fix unused vars
 
 function getExactTopOffset(isoString: string) {
   const date = new Date(isoString);
@@ -62,6 +54,7 @@ function DroppableCell({ day, time }: { day: string, time: string }) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function DraggableSessionBlock({ session, rooms, faculty, height, top }: { session: any, rooms: { id: string, roomNumber: string }[], faculty: { id: string, name: string }[], height: string, top: string }) {
+  const { selectedSessionId, setSelectedSessionId } = useSchedule()
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: session.id,
     data: {
@@ -74,6 +67,7 @@ function DraggableSessionBlock({ session, rooms, faculty, height, top }: { sessi
   })
 
   const hasWarnings = session.warnings && session.warnings.length > 0;
+  const isSelected = selectedSessionId === session.id;
   const roomObj = rooms.find(r => r.id === session.roomId)
   const facultyObj = faculty.find(f => f.id === session.facultyId)
 
@@ -83,7 +77,7 @@ function DraggableSessionBlock({ session, rooms, faculty, height, top }: { sessi
     top,
     transform: transform ? CSS.Translate.toString(transform) : undefined,
     opacity: isDragging ? 0.3 : 1,
-    zIndex: isDragging ? 40 : 10,
+    zIndex: isDragging ? 40 : (isSelected ? 30 : 10),
   }
 
   return (
@@ -91,11 +85,13 @@ function DraggableSessionBlock({ session, rooms, faculty, height, top }: { sessi
       ref={setNodeRef}
       {...listeners}
       {...attributes}
+      onClick={() => setSelectedSessionId(session.id)}
       className={cn(
         "absolute w-[94%] left-[3%] rounded-md border p-2 shadow-sm flex flex-col gap-1 transition-transform cursor-grab active:cursor-grabbing touch-none",
         hasWarnings ? "bg-red-50 border-red-300 text-red-900 dark:bg-red-950/40 dark:border-red-800 dark:text-red-200" 
           : "bg-blue-50 border-blue-200 text-blue-900 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-100",
-        !isDragging && "hover:scale-[1.02]"
+        !isDragging && "hover:scale-[1.02]",
+        isSelected && "ring-2 ring-indigo-500 dark:ring-indigo-400 ring-offset-1 dark:ring-offset-zinc-950"
       )}
       style={style}
     >
@@ -116,10 +112,18 @@ function DraggableSessionBlock({ session, rooms, faculty, height, top }: { sessi
 }
 
 export function Timetable({ rooms, faculty }: { rooms: { id: string; roomNumber: string }[], faculty: { id: string; name: string }[] }) {
-  const { sessions } = useSchedule()
+  const { sessions, isGenerating } = useSchedule()
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+    <div className="flex flex-col h-full bg-white dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden relative">
+      {/* Generating Overlay */}
+      {isGenerating && (
+        <div className="absolute inset-0 z-50 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-[1px] flex flex-col items-center justify-center pointer-events-none">
+          <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4" />
+          <div className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">OR-Tools Computing Best Fit...</div>
+        </div>
+      )}
+
       {/* Header Row */}
       <div className="grid grid-cols-[100px_1fr_1fr_1fr_1fr_1fr] border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
         <div className="p-3 border-r border-zinc-200 dark:border-zinc-800 flex items-center justify-center font-medium text-sm text-zinc-500">
@@ -152,7 +156,7 @@ export function Timetable({ rooms, faculty }: { rooms: { id: string; roomNumber:
               ))}
               
               {/* Overlay Sessions */}
-              {sessions.filter(s => s.dayOfWeek === day).map(session => {
+              {!isGenerating && sessions.filter(s => s.dayOfWeek === day).map(session => {
                 const duration = getDurationInHours(session.startTime, session.endTime);
                 
                 // Height = duration * 5rem (h-20)

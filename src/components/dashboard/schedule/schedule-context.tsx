@@ -25,6 +25,10 @@ interface ScheduleContextType {
   generateVariants: () => Promise<void>
   addSession: (payload: Omit<Session, 'id' | 'warnings'>) => void
   moveSession: (sessionId: string, updates: Partial<Pick<Session, 'dayOfWeek' | 'startTime' | 'endTime' | 'roomId'>>) => void
+  updateSession: (sessionId: string, updates: Partial<Session>) => void
+  deleteSession: (sessionId: string) => void
+  selectedSessionId: string | null
+  setSelectedSessionId: (id: string | null) => void
 }
 
 const ScheduleContext = createContext<ScheduleContextType | undefined>(undefined)
@@ -90,31 +94,38 @@ export function ScheduleProvider({ children, initialSessions = [] }: { children:
   const [batch, setBatch] = useState("b-100") // Mock ID
   const [sessions, setSessions] = useState<Session[]>(() => calculateConflicts(initialSessions))
   const [isGenerating, setIsGenerating] = useState(false)
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null)
 
   const generateVariants = async () => {
     setIsGenerating(true)
-    // Simulate API call for generating variants
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    // Mock variant data - usually you'd fetch this from the service
-    setSessions([
-      ...initialSessions,
-      {
-        id: "s-generated-1",
-        courseName: "Design History",
+    try {
+      const { generateScheduleVariants } = await import('@/services/overview.service')
+      // Pass the current configuration/state to the generator if needed
+      const result = await generateScheduleVariants()
+      
+      const newSessions = result.data.length > 0 ? result.data.map((s: { id: string, courseName: string, facultyId: string, roomId: string, dayOfWeek: string, startTime: string, endTime: string }) => ({...s, id: crypto.randomUUID()})) : [{
+        id: crypto.randomUUID(),
+        courseName: "Algorithmic Generation Dummy",
         facultyId: "123e4567-e89b-12d3-a456-426614174000",
         roomId: "r11bc32d-79ee-6594-c789-2g24d4e5f691",
-        dayOfWeek: "Tuesday",
-        startTime: "2026-03-31T10:00:00Z",
-        endTime: "2026-03-31T12:00:00Z"
-      }
-    ])
-    setIsGenerating(false)
+        dayOfWeek: "Wednesday",
+        startTime: "2026-04-01T10:00:00Z",
+        endTime: "2026-04-01T12:00:00Z"
+      }];
+
+      // Completely replace the existing state with the new generated variants
+      setSessions(calculateConflicts(newSessions))
+    } catch (e) {
+      console.error("Failed to generate variants:", e)
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   const addSession = (payload: Omit<Session, 'id' | 'warnings'>) => {
     const newSession: Session = {
       ...payload,
-      id: `s-local-${Date.now()}`,
+      id: crypto.randomUUID(),
     }
     setSessions(prev => calculateConflicts([...prev, newSession]))
   }
@@ -132,13 +143,34 @@ export function ScheduleProvider({ children, initialSessions = [] }: { children:
     });
   }
 
+  const updateSession = (sessionId: string, updates: Partial<Session>) => {
+    setSessions(prev => {
+      const sessionIndex = prev.findIndex(s => s.id === sessionId);
+      if (sessionIndex === -1) return prev;
+
+      const updatedSession = { ...prev[sessionIndex], ...updates };
+      const nextSessions = [...prev];
+      nextSessions[sessionIndex] = updatedSession;
+      
+      return calculateConflicts(nextSessions);
+    });
+  }
+
+  const deleteSession = (sessionId: string) => {
+    setSessions(prev => calculateConflicts(prev.filter(s => s.id !== sessionId)));
+    if (selectedSessionId === sessionId) {
+      setSelectedSessionId(null);
+    }
+  }
+
   return (
     <ScheduleContext.Provider value={{ 
       department, setDepartment, 
       batch, setBatch, 
       sessions, setSessions,
       isGenerating, generateVariants,
-      addSession, moveSession
+      addSession, moveSession, updateSession, deleteSession,
+      selectedSessionId, setSelectedSessionId
     }}>
       {children}
     </ScheduleContext.Provider>

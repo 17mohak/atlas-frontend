@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Timetable } from "@/components/dashboard/schedule/timetable"
 import { WorkbenchSidebar } from "@/components/dashboard/schedule/workbench-sidebar"
+import { WorkbenchDetailsPane } from "@/components/dashboard/schedule/workbench-details-pane"
 import { ScheduleProvider } from "@/components/dashboard/schedule/schedule-context"
 import { WorkbenchDnDWrapper } from "@/components/dashboard/schedule/workbench-dnd-wrapper"
 import { CalendarDays, Filter, Download } from "lucide-react"
@@ -49,6 +50,9 @@ export default function SchedulePage() {
               <Timetable rooms={mockWorkbenchData.rooms} faculty={mockWorkbenchData.faculty} />
             </div>
           </div>
+          
+          {/* Right-Hand Details Pane */}
+          <WorkbenchDetailsPane data={mockWorkbenchData} />
         </div>
       </WorkbenchDnDWrapper>
     </ScheduleProvider>
